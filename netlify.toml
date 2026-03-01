@@ -1,0 +1,20 @@
+## Netlify configuration for Next.js using Netlify's official plugin
+## Install locally before pushing: `npm install -D @netlify/plugin-nextjs`
+
+[build]
+  command = "npm run build"
+  # When using the Netlify Next.js plugin the plugin will manage outputs.
+  # Keep publish as the repo root so Netlify picks up the plugin output.
+  publish = "."
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[context.production.environment]
+  # Example: set a production site URL here or in Netlify UI
+  # NEXT_PUBLIC_SITE_URL = "https://example.com"
+
+# Optional: local dev settings (Netlify CLI will respect these)
+[dev]
+  command = "npm run dev"
+  port = 3000
