@@ -3,8 +3,6 @@
 
 [build]
   command = "npx prisma generate && npm run build"
-  # The Netlify Next.js plugin manages the publish directory automatically.
-  # Do not specify a publish path when using this plugin.
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
