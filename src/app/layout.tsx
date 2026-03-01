@@ -23,18 +23,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">
-        {siteUrl && (
-          <header className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2 px-4 text-center text-sm font-medium shadow-md">
-            <a href={siteUrl} target="_blank" rel="noreferrer" className="hover:underline">
-              🚀 Live at: {siteUrl.replace(/^https?:\/\//, "")}
-            </a>
-          </header>
-        )}
         <Providers>{children}</Providers>
       </body>
     </html>
