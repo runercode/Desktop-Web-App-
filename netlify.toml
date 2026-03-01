@@ -1,18 +1,20 @@
-## Netlify configuration for Next.js using Netlify's official plugin
-## Install locally before pushing: `npm install -D @netlify/plugin-nextjs`
-
 [build]
-  command = "npx prisma generate && npm run build"
+  command = "npm run build"
   publish = ".next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[context.production.environment]
-  # Example: set a production site URL here or in Netlify UI
-  # NEXT_PUBLIC_SITE_URL = "https://example.com"
+# Redirect all requests to Next.js router
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/___netlify-handler"
+  status = 200
+```
 
-# Optional: local dev settings (Netlify CLI will respect these)
-[dev]
-  command = "npm run dev"
-  port = 3000
+### 4. Set Environment Variables
+In Netlify dashboard, add your NextAuth variables:
+```
+NEXTAUTH_URL=https://your-site.netlify.app
+NEXTAUTH_SECRET=your-secret-here
+# Plus any OAuth provider keys
