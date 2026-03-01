@@ -2,10 +2,11 @@
 ## Install locally before pushing: `npm install -D @netlify/plugin-nextjs`
 
 [build]
-  command = "npm run build"
+  command = "npx prisma generate && npm run build"
   # When using the Netlify Next.js plugin the plugin will manage outputs.
   # Keep publish as the repo root so Netlify picks up the plugin output.
   publish = "."
+  # Regenerate Prisma Client before build to prevent stale client errors on cached builds
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
