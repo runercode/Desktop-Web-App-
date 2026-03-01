@@ -14,32 +14,24 @@ export async function generateCode(
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
   const client = new Anthropic({ apiKey });
 
-  // Use the responses API which is the stable interface for generation.
-  const input = `${systemPrompt}\n\n${userPrompt}`;
-  const res = await client.responses.create({
+  // Use the messages API for Claude code generation.
+  const userMessage = `${systemPrompt}\n\n${userPrompt}`;
+  const res = await client.messages.create({
     model: ANTHROPIC_MODEL,
-    input,
-    max_tokens_to_sample: 16000,
+    max_tokens: 16000,
+    messages: [
+      {
+        role: "user",
+        content: userMessage,
+      },
+    ],
   });
 
-  // The SDK returns an output array with content entries. Try common keys.
-  const output = res.output ?? [];
-  if (!Array.isArray(output) || output.length === 0) {
-    throw new Error("Anthropic returned no output");
-  }
-
-  // Try to find textual content in the response content blocks.
+  // Extract text from response content blocks.
   let text = "";
-  for (const block of output) {
-    const content = Array.isArray(block.content) ? block.content : [];
-    for (const c of content) {
-      if (typeof c === "string") {
-        text += c;
-      } else if (c && typeof c === "object") {
-        // common content types: {type: 'output_text', text: '...'} or {type: 'message', text: '...'}
-        if (typeof c.text === "string") text += c.text;
-        if (typeof c.type === "string" && c.type === "output_text" && typeof c.text === "string") text += c.text;
-      }
+  for (const block of res.content) {
+    if (block.type === "text") {
+      text += block.text;
     }
   }
 
